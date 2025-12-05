@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: n8n-service
+    name: n8n-elvis-new
     env: docker
     plan: starter
     region: oregon
@@ -11,6 +11,17 @@ services:
     envVars:
       - key: DB_TYPE
         value: postgresdb
+             # Memory optimization
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=384"
+      - key: N8N_DIAGNOSTICS_ENABLED
+        value: "false"
+      - key: N8N_METRICS
+        value: "false"
+      - key: EXECUTIONS_DATA_PRUNE
+        value: "true"
+      - key: EXECUTIONS_DATA_MAX_AGE
+        value: "24"  # Keep only 24 hours of executions
 
       - key: DB_POSTGRESDB_HOST
         fromDatabase:
@@ -44,9 +55,11 @@ services:
         value: "https"
 
       - key: N8N_HOST
-        value: "" # leave empty for now, we will set it in Render UI
+        value: "0.0.0.0" # leave empty for now, we will set it in Render UI
 
       - key: WEBHOOK_URL
-        value: "" # will set after deployment
+        value: "https://n8n-elvis-new.onrender.com" # will set after deployment
 
-
+            # Task runners (required for newer n8n)
+      - key: N8N_RUNNERS_ENABLED
+        value: "true"
