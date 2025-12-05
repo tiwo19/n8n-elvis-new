@@ -9,8 +9,7 @@ services:
     dockerfilePath: ./Dockerfile
 
     envVars:
-      - key: DB_TYPE
-        value: postgresdb
+
              # Memory optimization
       - key: NODE_OPTIONS
         value: "--max-old-space-size=384"
@@ -22,7 +21,10 @@ services:
         value: "true"
       - key: EXECUTIONS_DATA_MAX_AGE
         value: "24"  # Keep only 24 hours of executions
-
+        
+      - key: DB_TYPE
+        value: postgresdb
+        
       - key: DB_POSTGRESDB_HOST
         fromDatabase:
           name: n8n-db
@@ -59,6 +61,7 @@ services:
 
       - key: WEBHOOK_URL
         value: "https://n8n-elvis-new.onrender.com" # will set after deployment
+
 
             # Task runners (required for newer n8n)
       - key: N8N_RUNNERS_ENABLED
