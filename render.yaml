@@ -61,7 +61,13 @@ services:
 
       - key: WEBHOOK_URL
         value: "https://n8n-elvis-new.onrender.com" # will set after deployment
-
+        
+      - key: N8N_BASIC_AUTH_ACTIVE
+        value: "true"
+      - key: N8N_BASIC_AUTH_USER
+        value: "admin"
+      - key: N8N_BASIC_AUTH_PASSWORD
+        value: "d2&g~6Pc:G*@si>"
 
             # Task runners (required for newer n8n)
       - key: N8N_RUNNERS_ENABLED
