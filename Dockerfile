@@ -1,5 +1,7 @@
 # Use Alpine version for smaller size - CORRECT TAG
-FROM n8nio/n8n:1.41-alpine
+ARG tag=latest
+FROM n8nio/n8n:$tag
+
 
 # Install ffmpeg on Alpine
 USER root
