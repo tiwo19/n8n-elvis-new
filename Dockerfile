@@ -1,5 +1,5 @@
-# Use Alpine version for smaller size
-FROM n8nio/n8n:alpine
+# Use Alpine version for smaller size - CORRECT TAG
+FROM n8nio/n8n:1.41-alpine
 
 # Install ffmpeg on Alpine
 USER root
@@ -13,3 +13,4 @@ ENV NODE_OPTIONS="--max-old-space-size=384"
 ENV N8N_DIAGNOSTICS_ENABLED="false"
 ENV N8N_METRICS="false"
 ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS="false"
+ENV DB_TYPE=postgresdb
