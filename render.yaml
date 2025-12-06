@@ -8,9 +8,8 @@ services:
     dockerContext: .
     dockerfilePath: ./Dockerfile
 
-    envVars:
-
-             # Memory optimization
+      envVars:
+      # ==== MEMORY OPTIMIZATION ====
       - key: NODE_OPTIONS
         value: "--max-old-space-size=384"
       - key: N8N_DIAGNOSTICS_ENABLED
@@ -20,56 +19,50 @@ services:
       - key: EXECUTIONS_DATA_PRUNE
         value: "true"
       - key: EXECUTIONS_DATA_MAX_AGE
-        value: "24"  # Keep only 24 hours of executions
-        
+        value: "24"  # Keep only 24 hours of execution logs
+
+      # ==== DATABASE CONFIGURATION (POSTGRES) ====
       - key: DB_TYPE
         value: postgresdb
-        
       - key: DB_POSTGRESDB_HOST
         fromDatabase:
           name: n8n-db
           property: host
-
       - key: DB_POSTGRESDB_PORT
         fromDatabase:
           name: n8n-db
           property: port
-
       - key: DB_POSTGRESDB_USER
         fromDatabase:
           name: n8n-db
           property: user
-
       - key: DB_POSTGRESDB_PASSWORD
         fromDatabase:
           name: n8n-db
           property: password
-
       - key: DB_POSTGRESDB_DATABASE
         fromDatabase:
           name: n8n-db
           property: database
 
+      # ==== SECURITY ====
       - key: N8N_ENCRYPTION_KEY
-        sync: false   # you will manually set this in Render
-
+        sync: false     # You will manually set this in Render dashboard
       - key: N8N_PROTOCOL
         value: "https"
-
       - key: N8N_HOST
-        value: "0.0.0.0" # leave empty for now, we will set it in Render UI
-
+        value: "0.0.0.0" # Allow n8n to bind to all interfaces
       - key: WEBHOOK_URL
-        value: "https://n8n-elvis-new.onrender.com" # will set after deployment
-        
+        value: "https://n8n-elvis-new.onrender.com" # Public URL of service
+
       - key: N8N_BASIC_AUTH_ACTIVE
         value: "true"
       - key: N8N_BASIC_AUTH_USER
         value: "admin"
       - key: N8N_BASIC_AUTH_PASSWORD
         value: "d2&g~6Pc:G*@si>"
-        
-       # === SECURITY WARNINGS FIX ===
+
+      # ==== REQUIRED FOR NEWER N8N VERSIONS ====
       - key: N8N_RUNNERS_ENABLED
         value: "true"
       - key: N8N_BLOCK_ENV_ACCESS_IN_NODE
@@ -79,6 +72,8 @@ services:
       - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
         value: "true"
 
-            # Task runners (required for newer n8n)
-      - key: N8N_RUNNERS_ENABLED
+      # ==== FIX FOR COMMUNITY NODE INSTALLATION ISSUE ====
+      # Forces n8n + task runners to reinstall missing community nodes at startup
+      # This FIXES the error: "Unrecognized node type: @blotato/n8n-nodes-blotato"
+      - key: N8N_REINSTALL_MISSING_PACKAGES
         value: "true"
