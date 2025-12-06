@@ -10,7 +10,10 @@ RUN apk update && \
     rm -rf /var/cache/apk/*
     
     # Install missing community node
-RUN npm install -g @blotato/n8n-nodes-blotato
+# Install Blotato nodes
+RUN mkdir -p /custom && \
+    cd /custom && \
+    npm install @blotato/n8n-nodes-blotato
 USER node
 
 # Memory optimization
