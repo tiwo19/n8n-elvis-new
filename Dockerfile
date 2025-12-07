@@ -20,6 +20,3 @@ RUN npm init -y && \
 
 # Set working directory back to n8n
 WORKDIR /usr/local/lib/node_modules/n8n
-
-# Start command
-CMD ["n8n", "start", "--port=5678"]
