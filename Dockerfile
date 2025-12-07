@@ -1,11 +1,10 @@
 # Use specific n8n version for stability
 FROM n8nio/n8n:1.122.5
 
-# Install ffmpeg and dependencies
+# Install only ffmpeg (remove python if not needed)
 USER root
 RUN apk update && \
-    apk add --no-cache ffmpeg python3 py3-pip && \
-    pip3 install --upgrade pip && \
+    apk add --no-cache ffmpeg && \
     rm -rf /var/cache/apk/*
 
 # Create custom directory for community nodes
