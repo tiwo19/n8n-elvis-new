@@ -1,5 +1,5 @@
 # Use specific n8n version for stability
-FROM n8nio/n8n:1.122.5
+FROM n8nio/n8n:1.73.1
 
 # Install only ffmpeg (remove python if not needed)
 USER root
