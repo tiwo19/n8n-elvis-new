@@ -16,6 +16,7 @@ RUN mkdir -p /custom && \
     npm install @blotato/n8n-nodes-blotato
 USER node
 
+CMD ["n8n", "start", "--port=5678", "--tunnel"]
 # Memory optimization
 ENV NODE_OPTIONS="--max-old-space-size=768"
 ENV N8N_DIAGNOSTICS_ENABLED="false"
