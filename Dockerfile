@@ -1,34 +1,30 @@
-# Stage 1: Temporary image to provide package tools
-FROM alpine:latest AS alpine-tools
+# Use Debian-based n8n image (has apt, wget, curl)
+FROM n8nio/n8n:latest-debian
 
-# Stage 2: Official n8n image
-FROM n8nio/n8n:latest
-
-# Switch to root to perform installations
+# Switch to root to install system packages
 USER root
 
-# Restore apk and its dependencies from the Alpine image
-COPY --from=alpine-tools /sbin/apk /sbin/apk
-COPY --from=alpine-tools /lib/libz.so.1 /lib/libz.so.1
-COPY --from=alpine-tools /usr/share/apk /usr/share/apk
-COPY --from=alpine-tools /lib/ld-musl-*.so.1 /lib/
-COPY --from=alpine-tools /usr/lib/libapk.so* /usr/lib/
+# Install ffmpeg safely
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ffmpeg \
+ && rm -rf /var/lib/apt/lists/*
 
-# Now you can use apk to install ffmpeg
-RUN apk update && \
-    apk add --no-cache ffmpeg && \
-    rm -rf /var/cache/apk/*
+# Create directory for community nodes
+RUN mkdir -p /custom \
+ && chown node:node /custom
 
-# Create custom directory for community nodes
-RUN mkdir -p /custom && chown node:node /custom
+# Tell n8n where to load community nodes from
+ENV N8N_CUSTOM_EXTENSIONS=/custom
 
-# Switch back to node user
+# Switch back to n8n user
 USER node
 
-# Install community nodes to custom directory
+# Install community nodes
 WORKDIR /custom
-RUN npm init -y && \
-    npm install @blotato/n8n-nodes-blotato n8n-nodes-puppeteer-extended
+RUN npm init -y \
+ && npm install \
+    @blotato/n8n-nodes-blotato \
+    n8n-nodes-puppeteer-extended
 
-# Set working directory back to n8n default
+# Restore default n8n working directory
 WORKDIR /home/node/.n8n
