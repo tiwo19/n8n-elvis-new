@@ -3,9 +3,10 @@ FROM n8nio/n8n:latest
 
 # Install only ffmpeg (remove python if not needed)
 USER root
-RUN apk update && \
-    apk add --no-cache ffmpeg && \
-    rm -rf /var/cache/apk/*
+RUN apt-get update \
+ && apt-get install -y ffmpeg \
+ && rm -rf /var/lib/apt/lists/*
+
 
 # Create custom directory for community nodes
 RUN mkdir -p /custom && chown node:node /custom
