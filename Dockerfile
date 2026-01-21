@@ -1,23 +1,25 @@
-# Use specific n8n version for stability
-FROM n8nio/n8n:latest
+# Pin n8n version for stability
+FROM n8nio/n8n:1.32.1
 
-# Install only ffmpeg (remove python if not needed)
+# Install ffmpeg
 USER root
 RUN apt-get update \
  && apt-get install -y ffmpeg \
  && rm -rf /var/lib/apt/lists/*
 
-
-# Create custom directory for community nodes
+# Custom community nodes directory
 RUN mkdir -p /custom && chown node:node /custom
+
+# Tell n8n where to load community nodes from
+ENV N8N_CUSTOM_EXTENSIONS=/custom
 
 # Switch back to node user
 USER node
 
-# Install community nodes to custom directory
+# Install community nodes
 WORKDIR /custom
-RUN npm init -y && \
-    npm install @blotato/n8n-nodes-blotato n8n-nodes-puppeteer-extended
+RUN npm init -y \
+ && npm install @blotato/n8n-nodes-blotato n8n-nodes-puppeteer-extended
 
-# Set working directory back to n8n
+# Restore default working dir
 WORKDIR /usr/local/lib/node_modules/n8n
