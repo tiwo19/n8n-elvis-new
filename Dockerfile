@@ -11,6 +11,10 @@ RUN apk update && \
 # Create custom directory for community nodes
 RUN mkdir -p /custom && chown node:node /custom
 
+
+# ✅ ENABLE /tmp
+RUN chmod 1777 /tmp
+
 # Switch back to node user
 USER node
 
