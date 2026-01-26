@@ -10,7 +10,7 @@ RUN apk update && \
 RUN mkdir -p /home/node/.n8n/tmp \
     /home/node/.n8n/binary \
     /custom && \
-    chown -R node:node /home/node/.n8n /custom
+    chown -R node:node /home/node/.n8n
 
 # FORCE all temp usage away from /tmp
 ENV TMPDIR=/home/node/.n8n/tmp
